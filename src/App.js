@@ -4,7 +4,9 @@ import UseFetchJobs from "./useFetchJobs";
 import { Contanier } from "react-bootstrap";
 
 const App = () => {
-  const { jobs, loading, error } = UseFetchJobs();
+  const [params, setParams] = useState({});
+  const [page, setPage] = useState(1);
+  const { jobs, loading, error } = UseFetchJobs(params, page);
 
   return (
     <Contanier>
