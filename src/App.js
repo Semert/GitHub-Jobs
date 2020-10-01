@@ -1,24 +1,33 @@
-import React from "react";
-import "./App.css";
-import UseFetchJobs from "./useFetchJobs";
-import { Contanier } from "react-bootstrap";
+import React, { useState } from "react";
+import useFetchJobs from "./useFetchJobs";
+import { Container } from "react-bootstrap";
 import Job from "./Job";
 
-const App = () => {
+function App() {
   const [params, setParams] = useState({});
   const [page, setPage] = useState(1);
-  const { jobs, loading, error } = UseFetchJobs(params, page);
+  const { jobs, loading, error, hasNextPage } = useFetchJobs(params, page);
+
+  function handleParamChange(e) {
+    const param = e.target.name;
+    const value = e.target.value;
+    setPage(1);
+    setParams((prevParams) => {
+      return { ...prevParams, [param]: value };
+    });
+  }
 
   return (
-    <Contanier>
-      {loading && <h1>Loading...</h1>}
-      {error && <h1>Error, Try Refreshing.</h1>}
+    <Container className="my-4">
+      <h1 className="mb-4">GitHub Jobs</h1>
 
+      {loading && <h1>Loading...</h1>}
+      {error && <h1>Error. Try Refreshing.</h1>}
       {jobs.map((job) => {
         return <Job key={job.id} job={job} />;
       })}
-    </Contanier>
+    </Container>
   );
-};
+}
 
 export default App;
